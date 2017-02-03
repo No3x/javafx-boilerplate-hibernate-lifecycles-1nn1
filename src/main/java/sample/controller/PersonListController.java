@@ -1,6 +1,5 @@
 package sample.controller;
 
-import com.google.common.collect.Sets;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -44,19 +43,6 @@ public class PersonListController {
     private void initialize() {
         System.out.println("initialize");
         personsListView.setCellFactory((ListView<Person> param) -> new ListViewModelAdapter<>());
-
-
-        Team t = teamService.createRandom();
-        Person p = personService.createRandom();
-
-        p.setTeams(Sets.newHashSet(t));
-        personDAO.add(p);
-
-        personDAO.getAll(); // Print nice table in the logfiles.
-        p.getTeams().clear();
-        personDAO.update(p);
-        personDAO.getAll(); // Print nice table in the logfiles.
-
         setupBindings();
         setupListeners();
     }
@@ -79,8 +65,12 @@ public class PersonListController {
         });
     }
 
-    public void random(ActionEvent event) {
-        personObservableList.add(personService.createRandom());
+    public void addRandomAction(ActionEvent event) {
+        Team t = teamService.createRandom();
+        Person p = personService.createRandom();
+        p.getTeams().add(t);
+        personDAO.saveOrUpdate(p);
+        personObservableList.add(p);
     }
 
     public Person getPersonSelected() {
