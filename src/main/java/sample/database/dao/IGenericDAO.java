@@ -6,13 +6,13 @@ import java.util.Optional;
 /**
  * Created by czoeller on 11.07.16.
  */
-public interface IGenericDAO<E,K> {
+public interface IGenericDAO<E,ID> {
     void add(E entity) ;
     E saveOrUpdate(E entity) ;
     E update(E entity) ;
     void remove(E entity);
     void detach(E entity);
-    E find(K key);
+    E find(ID key);
     List<E> getAll() ;
     Optional<E> findFirst(String field, String value);
     E findOrCreate(E entity, String field, String value);
