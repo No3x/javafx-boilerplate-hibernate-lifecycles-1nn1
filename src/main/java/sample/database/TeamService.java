@@ -6,7 +6,6 @@ import sample.model.Team;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by No3x on 01.02.2017.
@@ -15,7 +14,7 @@ public class TeamService {
 
     private final IGenericDAO<Team, Integer> teamDAO;
 
-    private final RandomNameGenerator randomNameGenerator = new RandomNameGenerator(new Random().nextInt());
+    private final RandomNameGenerator randomNameGenerator = new RandomNameGenerator(500);
 
     @Inject
     public TeamService(IGenericDAO<Team, Integer> teamDAO) {
