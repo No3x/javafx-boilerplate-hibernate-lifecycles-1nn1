@@ -1,6 +1,6 @@
 package sample.controller;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import sample.database.PersonService;
+import sample.database.TeamService;
 import sample.database.dao.IGenericDAO;
 import sample.gui.WindowManager;
 import sample.gui.modeladapter.ListViewModelAdapter;
@@ -34,6 +35,9 @@ public class PersonListController {
     @Inject
     private PersonService personService;
 
+    @Inject
+    private TeamService teamService;
+
     @Inject WindowManager windowManager;
 
     @FXML
@@ -42,10 +46,10 @@ public class PersonListController {
         personsListView.setCellFactory((ListView<Person> param) -> new ListViewModelAdapter<>());
 
 
-        Team t = new Team("T1");
-        Person p = new Person("P1");
+        Team t = teamService.createRandom();
+        Person p = personService.createRandom();
 
-        p.setTeams(Lists.newArrayList(t));
+        p.setTeams(Sets.newHashSet(t));
         personDAO.add(p);
 
         personDAO.getAll(); // Print nice table in the logfiles.

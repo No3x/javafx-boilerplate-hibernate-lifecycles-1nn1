@@ -10,6 +10,7 @@ import sample.gui.GUIRepresentable;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by No3x on 01.02.2017.
@@ -51,15 +52,14 @@ public class Person implements GUIRepresentable {
     }
 
 
-    private List<Team> teams;
+    private Set<Team> teams;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "person_team")
-    public List<Team> getTeams() {
+    public Set<Team> getTeams() {
         return teams;
     }
 
-    public void setTeams(List<Team> teams) {
+    public void setTeams(Set<Team> teams) {
         this.teams = teams;
     }
 
@@ -77,6 +77,5 @@ public class Person implements GUIRepresentable {
     public String toString() {
         return name.getValue();
     }
-
 
 }

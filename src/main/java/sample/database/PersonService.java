@@ -31,4 +31,8 @@ public class PersonService {
         personDAO.add(person);
         return person;
     }
+
+    public void save(Person person) {
+        personDAO.saveOrUpdate(person);
+    }
 }

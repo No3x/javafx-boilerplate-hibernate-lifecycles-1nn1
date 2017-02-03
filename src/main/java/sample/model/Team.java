@@ -9,8 +9,7 @@ import javafx.util.Callback;
 import sample.gui.GUIRepresentable;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by No3x on 03.02.2017.
@@ -51,14 +50,14 @@ public class Team implements GUIRepresentable {
         return name;
     }
 
-    private List<Person> persons;
+    private Set<Person> persons;
 
     @ManyToMany(mappedBy="teams")
-    public List<Person> getPersons() {
+    public Set<Person> getPersons() {
         return persons;
     }
 
-    public void setPersons(List<Person> persons) {
+    public void setPersons(Set<Person> persons) {
         this.persons = persons;
     }
 
@@ -76,6 +75,5 @@ public class Team implements GUIRepresentable {
     public String toString() {
         return name.getValue();
     }
-
 
 }
