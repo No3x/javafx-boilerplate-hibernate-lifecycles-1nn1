@@ -17,6 +17,9 @@ import sample.model.Team;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * List of {@link Person}.
+ */
 @Singleton
 public class PersonListController {
 
@@ -39,21 +42,23 @@ public class PersonListController {
 
     @Inject WindowManager windowManager;
 
+    /**
+     * Initialize the view by loading the persons from the database.
+     * Sets a cell factory to keep the ListView in sync when the name is edited in the {@link PersonEditController}.
+     */
     @FXML
     private void initialize() {
         System.out.println("initialize");
         personsListView.setCellFactory((ListView<Person> param) -> new ListViewModelAdapter<>());
-        setupBindings();
-        setupListeners();
-    }
-
-    private void setupBindings() {
-        System.out.println("setupBindings");
         personObservableList = FXCollections.observableArrayList( Person.extractor() );
         personObservableList.addAll(personService.getAll());
         personsListView.setItems( personObservableList );
+        setupListeners();
     }
 
+    /**
+     * Support doubleclick to a person to open the {@link PersonEditController}.
+     */
     private void setupListeners() {
         System.out.println("setupListeners");
         personsListView.setOnMouseClicked(event -> {
@@ -65,6 +70,11 @@ public class PersonListController {
         });
     }
 
+    /**
+     * Generate a new person and team with random names.
+     * Add the person to the team.
+     * @param event
+     */
     public void addRandomAction(ActionEvent event) {
         Team t = teamService.createRandom();
         Person p = personService.createRandom();
@@ -73,6 +83,10 @@ public class PersonListController {
         personObservableList.add(p);
     }
 
+    /**
+     * Expose selected person to allow edit it in the {@link PersonEditController}.
+     * @return
+     */
     public Person getPersonSelected() {
         return personsListView.getSelectionModel().getSelectedItem();
     }

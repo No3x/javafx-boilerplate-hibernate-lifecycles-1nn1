@@ -20,6 +20,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.stream.Collectors;
 
+/**
+ * Controller to edit a person.
+ * The name of the persons and the teams the person attends are loaded once from the database.
+ * Any changes to this data are applied to the form data (TextField and the ListView) only.
+ * On {@link #saveAction(ActionEvent)} by just setting the modified form data to the person object.
+ */
 @Singleton
 public class PersonEditController {
 
@@ -43,6 +49,12 @@ public class PersonEditController {
 
     private Person personSelected;
 
+    /**
+     * Initialize the view by loading the person data and the teams from the database.
+     * Then setting the loaded data to the form data.
+     * Select the first item in the comboBox for convenience.
+     * In contrast to the {@link PersonListController} we do not set a cellFactory as there are no dependent view elements we need to keep in sync.
+     */
     @FXML
     private void initialize() {
         System.out.println("initialize");
@@ -53,6 +65,10 @@ public class PersonEditController {
         name.setText(personSelected.getName());
     }
 
+    /**
+     * Apply the the form data to the person object and persist.
+     * @param event
+     */
     public void saveAction(ActionEvent event) {
         personSelected.setName(name.getText());
         personSelected.setTeams(teamListview.getItems().stream().collect(Collectors.toSet()));
@@ -60,6 +76,12 @@ public class PersonEditController {
         closeWindow(event);
     }
 
+    /**
+     * Add button action.
+     * Add a team from the ComboBox to the ListView.
+     * Avoids adding a person more than once.
+     * @param event
+     */
     public void addTeamAction(ActionEvent event) {
         final Team selectedItem = teamCombobox.getSelectionModel().getSelectedItem();
         // Do not add them more than once to the ListView
@@ -68,6 +90,11 @@ public class PersonEditController {
         }
     }
 
+    /**
+     * Remove button action.
+     * Remove the team from the ListView.
+     * @param event
+     */
     public void removeTeamAction(ActionEvent event) {
         teamListview.getItems().remove( teamListview.getSelectionModel().getSelectedItem() );
     }
