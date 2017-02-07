@@ -12,10 +12,12 @@ import sample.database.dao.IGenericDAO;
 import sample.gui.WindowManager;
 import sample.gui.modeladapter.ListViewModelAdapter;
 import sample.model.Person;
+import sample.model.PersonTeam;
 import sample.model.Team;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Date;
 
 /**
  * List of {@link Person}.
@@ -78,7 +80,12 @@ public class PersonListController {
     public void addRandomAction(ActionEvent event) {
         Team t = teamService.createRandom();
         Person p = personService.createRandom();
-        p.getTeams().add(t);
+        PersonTeam pt = new PersonTeam();
+        pt.setPerson(p);
+        pt.setTeam(t);
+        pt.setCreatedDate(new Date()); //extra column
+        pt.setCreatedBy("no3x"); //extra column
+        p.getPersonTeams().add(pt);
         personDAO.saveOrUpdate(p);
         personObservableList.add(p);
     }

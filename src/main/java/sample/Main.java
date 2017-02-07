@@ -22,11 +22,14 @@ public class Main {
             }
         });
 
+        Server server = null;
+        Server webServer = null;
         try {
-            Server.createTcpServer("-tcpAllowOthers").start();
+            server = Server.createTcpServer("-tcpAllowOthers")
+                          .start();
             Class.forName("org.h2.Driver");
             DriverManager.getConnection("jdbc:log4jdbc:h2:file:./database/sample;AUTO_SERVER=TRUE;TRACE_LEVEL_FILE=4");
-            final Server webServer = Server.createWebServer();
+            webServer = Server.createWebServer();
             webServer.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,6 +41,13 @@ public class Main {
             gui.run(args);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if(null != server) {
+            server.stop();
+        }
+        if(null != server) {
+            webServer.stop();
         }
     }
 }

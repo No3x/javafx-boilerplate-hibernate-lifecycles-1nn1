@@ -1,5 +1,6 @@
 package sample.model;
 
+import com.google.common.collect.ImmutableList;
 import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -9,7 +10,7 @@ import javafx.util.Callback;
 import sample.gui.GUIRepresentable;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,7 +21,7 @@ import java.util.TreeSet;
 public class Person implements GUIRepresentable, Comparable<Person> {
     private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
     private final StringProperty name = new SimpleStringProperty(this, "name");
-    private Set<Team> teams = new TreeSet<>();
+    private Set<PersonTeam> personTeams = new TreeSet<>();
 
     public Person(String s) {
         this.name.set(s);
@@ -53,13 +54,13 @@ public class Person implements GUIRepresentable, Comparable<Person> {
         return name;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    public Set<Team> getTeams() {
-        return teams;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.person", cascade=CascadeType.ALL, orphanRemoval = true)
+    public Set<PersonTeam> getPersonTeams() {
+        return personTeams;
     }
 
-    public void setTeams(Set<Team> teams) {
-        this.teams = teams;
+    public void setPersonTeams(Set<PersonTeam> personTeams) {
+        this.personTeams = personTeams;
     }
 
     @Override
@@ -92,6 +93,24 @@ public class Person implements GUIRepresentable, Comparable<Person> {
         return result;
     }
 
+    @Transient
+    public ImmutableList<Team> getTeams() {
+        return new ImmutableList.Builder<Team>().addAll(personTeams.stream().map(PersonTeam::getTeam).iterator()).build();
+    }
+
+    public boolean addTeam(Team team, String createdBy, Date createdDate) {
+        final PersonTeam personTeam = new PersonTeam();
+        personTeam.setPerson(this);
+        personTeam.setTeam(team);
+        personTeam.setCreatedBy(createdBy);
+        personTeam.setCreatedDate(createdDate);
+        return personTeams.add( personTeam );
+    }
+
+    public boolean removeTeam(Team team) {
+        return personTeams.removeIf(personTeam -> personTeam.getTeam() == team);
+    }
+
     @Override
     public String toString() {
         return name.getValue();
@@ -99,6 +118,7 @@ public class Person implements GUIRepresentable, Comparable<Person> {
 
     @Override
     public int compareTo(Person o) {
+        //TODO: implement sort
         return 0;
     }
 }

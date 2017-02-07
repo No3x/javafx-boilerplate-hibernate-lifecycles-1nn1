@@ -9,6 +9,7 @@ import javafx.util.Callback;
 import sample.gui.GUIRepresentable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -16,10 +17,10 @@ import java.util.TreeSet;
  * Created by No3x on 03.02.2017.
  */
 @Entity
-public class Team implements GUIRepresentable, Comparable<Team>  {
+public class Team implements GUIRepresentable, Serializable, Comparable<Team>  {
     private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
     private final StringProperty name = new SimpleStringProperty(this, "name");
-    private Set<Person> persons = new TreeSet<>();
+    private Set<PersonTeam> personTeams = new TreeSet<>();
 
     public Team(String s) {
         this.name.set(s);
@@ -52,13 +53,13 @@ public class Team implements GUIRepresentable, Comparable<Team>  {
         return name;
     }
 
-    @ManyToMany(mappedBy="teams")
-    public Set<Person> getPersons() {
-        return persons;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.team")
+    public Set<PersonTeam> getPersonTeams() {
+        return personTeams;
     }
 
-    public void setPersons(Set<Person> persons) {
-        this.persons = persons;
+    public void setPersonTeams(Set<PersonTeam> personTeams) {
+        this.personTeams = personTeams;
     }
 
     @Override

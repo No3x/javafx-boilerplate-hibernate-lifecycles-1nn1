@@ -63,6 +63,7 @@ public class GenericDAOImpl<E, ID extends Serializable> implements IGenericDAO<E
             em.getTransaction()
               .commit();
         } catch (Exception e) {
+            LOG.error("Failed to update entity.", e);
             em.getTransaction().rollback();
         }
 

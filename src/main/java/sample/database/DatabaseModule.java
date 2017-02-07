@@ -7,6 +7,7 @@ import com.google.inject.persist.jpa.JpaPersistModule;
 import sample.database.dao.GenericDAOImpl;
 import sample.database.dao.IGenericDAO;
 import sample.model.Person;
+import sample.model.PersonTeam;
 import sample.model.Team;
 
 import java.util.Properties;
@@ -21,6 +22,7 @@ public class DatabaseModule extends AbstractModule {
         install( createJpaPersistModule() );
         bind(new TypeLiteral<IGenericDAO<Person, Integer>>(){}).to(new TypeLiteral<GenericDAOImpl<Person, Integer>>(){}).in(Scopes.SINGLETON);
         bind(new TypeLiteral<IGenericDAO<Team, Integer>>(){}).to(new TypeLiteral<GenericDAOImpl<Team, Integer>>(){}).in(Scopes.SINGLETON);
+        bind(new TypeLiteral<IGenericDAO<PersonTeam, Integer>>(){}).to(new TypeLiteral<GenericDAOImpl<PersonTeam, Integer>>(){}).in(Scopes.SINGLETON);
         bind(JPAInitializer.class).asEagerSingleton();
     }
 
