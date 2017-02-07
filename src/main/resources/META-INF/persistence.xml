@@ -8,6 +8,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>sample.model.Person</class>
         <class>sample.model.Team</class>
+        <class>sample.model.PersonTeam</class>
 
         <properties>
             <property name="hibernate.current_session_context_class" value="thread"/>
