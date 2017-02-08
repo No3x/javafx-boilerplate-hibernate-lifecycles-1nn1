@@ -14,12 +14,12 @@ import javafx.stage.Stage;
 import sample.database.PersonService;
 import sample.database.TeamService;
 import sample.database.dao.IGenericDAO;
+import sample.gui.modeladapter.ListCompare;
 import sample.model.*;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Date;
-import java.util.Optional;
 
 /**
  * Controller to edit a person.
@@ -75,46 +75,17 @@ public class PersonEditController {
      */
     public void saveAction(ActionEvent event) {
         personSelected.setName(name.getText());
-        new ListCompare<>(personSelected.getTeams(), teamListview.getItems(), new ISyncAction<Team>() {
+        new ListCompare<>(personSelected.getTeams(), teamListview.getItems(), new ListCompare.IChangeAction<Team>() {
             @Override
             public void added(Iterable<? extends Team> added) {
-                added.forEach( team -> {
-                    personSelected.addTeam(team, "Sync", new Date());
-                    personService.save(personSelected);
-                });
+                added.forEach( team -> personSelected.addTeam(team, "GUI", new Date()));
             }
-
             @Override
             public void removed(Iterable<? extends Team> removed) {
-                removed.forEach(team -> {
-                    //personService.save(personSelected);
-                    final Optional<PersonTeam> optPersonTeam = personSelected.getPersonTeams()
-                                                                             .stream()
-                                                                             .filter(input -> input.getTeam().equals(team))
-                                                                             .findAny();
-                    optPersonTeam.ifPresent(personTeam -> {
-                        //personTeam.getPerson().getPersonTeams().remove(personTeam);
-                        //personTeam.getTeam().getPersonTeams().remove(personTeam);
-                        //personTeamDAO.remove(personTeam);
-                    });
-                    personSelected.removeTeam(team);
-                    personService.save(personSelected);
-                    /*final Optional<PersonTeam> optPersonTeam = personSelected.getPersonTeams()
-                                                                   .stream()
-                                                                   .filter(input -> input.getTeam().equals(team))
-                                                                   .findAny();
-                    optPersonTeam.ifPresent(personTeam -> {
-                        personTeam.setPerson(null);
-                        personTeam.setTeam(null);
-                        team.getPersonTeams().remove(personTeam);
-                        personSelected.removeTeam(team);
-                        personTeamDAO.remove(personTeam);
-                    });*/
-                });
+                removed.forEach(team -> personSelected.removeTeam(team));
             }
-        }).syncToDatabase();
-        //personSelected.setPersonTeams(teamListview.getItems().stream().map().collect(Collectors.toSet()));
-        //personService.save(personSelected);
+        }).manageChanges();
+        personService.save(personSelected);
         closeWindow(event);
     }
 

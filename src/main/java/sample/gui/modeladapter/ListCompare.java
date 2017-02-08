@@ -1,4 +1,4 @@
-package sample.model;
+package sample.gui.modeladapter;
 
 import com.google.common.collect.Sets;
 
@@ -9,17 +9,17 @@ public class ListCompare<T> {
 
     private Iterable<? extends T> gui;
     private Iterable<? extends T> database;
-    private ISyncAction<T> action;
+    private IChangeAction<T> changeAction;
 
-    public ListCompare(Iterable<? extends T> gui, Iterable<? extends T> database, ISyncAction<T> action) {
+    public ListCompare(Iterable<? extends T> gui, Iterable<? extends T> database, IChangeAction<T> action) {
         this.gui = gui;
         this.database = database;
-        this.action = action;
+        this.changeAction = action;
     }
 
-    public void syncToDatabase() {
-        action.added( addedItems() );
-        action.removed( removedItems() );
+    public void manageChanges() {
+        changeAction.added( addedItems() );
+        changeAction.removed( removedItems() );
     }
 
     private Iterable<T> addedItems() {
@@ -28,5 +28,10 @@ public class ListCompare<T> {
 
     private Iterable<T> removedItems() {
         return Sets.difference( Sets.newHashSet(gui),  Sets.newHashSet(database));
+    }
+
+    public interface IChangeAction<T> {
+        void added(Iterable<? extends T> added);
+        void removed(Iterable<? extends T> removed);
     }
 }
