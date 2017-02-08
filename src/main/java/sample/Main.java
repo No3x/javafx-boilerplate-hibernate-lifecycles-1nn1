@@ -25,8 +25,7 @@ public class Main {
         Server server = null;
         Server webServer = null;
         try {
-            server = Server.createTcpServer("-tcpAllowOthers")
-                          .start();
+            server = Server.createTcpServer("-tcpAllowOthers").start();
             Class.forName("org.h2.Driver");
             DriverManager.getConnection("jdbc:log4jdbc:h2:file:./database/sample;AUTO_SERVER=TRUE;TRACE_LEVEL_FILE=4");
             webServer = Server.createWebServer();
