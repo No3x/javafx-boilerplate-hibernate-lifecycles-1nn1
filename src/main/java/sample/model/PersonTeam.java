@@ -22,6 +22,11 @@ public class PersonTeam implements java.io.Serializable, Comparable<PersonTeam> 
     public PersonTeam() {
     }
 
+    public PersonTeam(Person person, Team team) {
+        this.pk.setPerson(person);
+        this.pk.setTeam(team);
+    }
+
     @EmbeddedId
     public PersonTeamPk getPk() {
         return pk;

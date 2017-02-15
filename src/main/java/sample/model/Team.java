@@ -53,7 +53,7 @@ public class Team implements GUIRepresentable, Serializable, Comparable<Team>  {
         return name;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.team")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.team", orphanRemoval = true)
     public Set<PersonTeam> getPersonTeams() {
         return personTeams;
     }

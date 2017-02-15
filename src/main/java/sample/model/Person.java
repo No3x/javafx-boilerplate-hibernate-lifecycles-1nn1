@@ -98,17 +98,20 @@ public class Person implements GUIRepresentable, Comparable<Person> {
         return new ImmutableList.Builder<Team>().addAll(personTeams.stream().map(PersonTeam::getTeam).iterator()).build();
     }
 
-    public boolean addTeam(Team team, String createdBy, Date createdDate) {
-        final PersonTeam personTeam = new PersonTeam();
-        personTeam.setPerson(this);
-        personTeam.setTeam(team);
+    public void addTeam(Team team, String createdBy, Date createdDate) {
+        final PersonTeam personTeam = new PersonTeam(this, team);
         personTeam.setCreatedBy(createdBy);
         personTeam.setCreatedDate(createdDate);
-        return personTeams.add( personTeam );
+        personTeams.add(personTeam);
+        team.getPersonTeams().add( personTeam );
     }
 
-    public boolean removeTeam(Team team) {
-        return personTeams.removeIf(personTeam -> personTeam.getTeam() == team);
+    public void removeTeam(Team team) {
+        PersonTeam personTeam = new PersonTeam( this, team );
+        team.getPersonTeams().remove( personTeam );
+        personTeams.remove( personTeam );
+        personTeam.setPerson( null );
+        personTeam.setTeam( null );
     }
 
     @Override
