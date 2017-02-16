@@ -9,10 +9,11 @@ A boilerplate project for JavaFX development with JPA and hibernate showing a 1n
 - h2 database is created, schema is created automatically. See `persistence.xml`
 - jpa guice provider
 - GenericDAO sample
+- Lifecycle of association in real world use cases: GUI
 - 1nn1 Lifecycle
 - Observable
 
-This project is not meant to be a full fleged template. Rather it is a snapshot of a bigger project I'm working on. The key-features are ported into this template. For it contains bugs and misconceptions. Especially the included GenericDAO needs further work.
+This project is not meant to be a full fledged template. Rather it is a snapshot of a bigger project I'm working on. The key-features are ported into this template. For it contains bugs and misconceptions. Especially the included GenericDAO needs further work.
 
 There are a vast of libraries included:
 
