@@ -1,5 +1,5 @@
-# javafx-boilerplate-hibernate-lifecycles-1nn1
-A boilerplate project for JavaFX development with JPA and hibernate showing a 1nn1 object life cycle. Features:
+# javafx-boilerplate-hibernate-lifecycle-1nn1
+A boilerplate project for JavaFX development with JPA and hibernate. It shows some real world use cases relevant for `association lifecycle`. I felt most tutorials on the web lacking this complete lifecycle and are almost useless therefore. Features:
 
 - guice DI integration with gluonhq's ignite
 - a sample for communication between two controllers
