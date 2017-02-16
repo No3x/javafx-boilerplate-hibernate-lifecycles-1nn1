@@ -1,18 +1,19 @@
 package sample.model;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 import javafx.beans.Observable;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
 import javafx.util.Callback;
+import org.hibernate.collection.internal.PersistentSet;
 import sample.gui.GUIRepresentable;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * Created by No3x on 01.02.2017.
@@ -22,6 +23,7 @@ public class Person implements GUIRepresentable, Comparable<Person> {
     private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
     private final StringProperty name = new SimpleStringProperty(this, "name");
     private Set<PersonTeam> personTeams = new TreeSet<>();
+    private ListProperty<Team> teams = new SimpleListProperty<>( this, "teams", FXCollections.observableArrayList());
 
     public Person(String s) {
         this.name.set(s);
@@ -61,6 +63,8 @@ public class Person implements GUIRepresentable, Comparable<Person> {
 
     public void setPersonTeams(Set<PersonTeam> personTeams) {
         this.personTeams = personTeams;
+        teams.setAll(personTeams.stream().map(PersonTeam::getTeam).collect(Collectors.toList()));
+        // personTeams.stream().map(PersonTeam::getTeam).forEach( team -> teams.add(team));
     }
 
     @Override
@@ -94,8 +98,8 @@ public class Person implements GUIRepresentable, Comparable<Person> {
     }
 
     @Transient
-    public ImmutableList<Team> getTeams() {
-        return new ImmutableList.Builder<Team>().addAll(personTeams.stream().map(PersonTeam::getTeam).iterator()).build();
+    public ReadOnlyListProperty<Team> getTeams() {
+        return teams;
     }
 
     public void addTeam(Team team, String createdBy, Date createdDate) {
@@ -104,6 +108,7 @@ public class Person implements GUIRepresentable, Comparable<Person> {
         personTeam.setCreatedDate(createdDate);
         personTeams.add(personTeam);
         team.getPersonTeams().add( personTeam );
+        teams.setAll(personTeams.stream().map(PersonTeam::getTeam).collect(Collectors.toList()));
     }
 
     public void removeTeam(Team team) {
@@ -112,6 +117,7 @@ public class Person implements GUIRepresentable, Comparable<Person> {
         personTeams.remove( personTeam );
         personTeam.setPerson( null );
         personTeam.setTeam( null );
+        teams.setAll(personTeams.stream().map(PersonTeam::getTeam).collect(Collectors.toList()));
     }
 
     @Override

@@ -28,6 +28,9 @@ public class PersonListController {
     @FXML
     private ListView<Person> personsListView;
 
+    @FXML
+    private ListView<Team> teamsOfSelected;
+
     private ObservableList<Person> personObservableList;
 
     @Inject
@@ -42,7 +45,8 @@ public class PersonListController {
     @Inject
     private TeamService teamService;
 
-    @Inject WindowManager windowManager;
+    @Inject
+    private WindowManager windowManager;
 
     /**
      * Initialize the view by loading the persons from the database.
@@ -55,6 +59,7 @@ public class PersonListController {
         personObservableList = FXCollections.observableArrayList( Person.extractor() );
         personObservableList.addAll(personService.getAll());
         personsListView.setItems( personObservableList );
+        personsListView.getSelectionModel().selectFirst();
         setupListeners();
     }
 
@@ -63,6 +68,11 @@ public class PersonListController {
      */
     private void setupListeners() {
         System.out.println("setupListeners");
+        //Bindings.when(teamsOfSelected.itemsProperty().isNotNull()).then( Bindings.bindBidirectional(teamsOfSelected.itemsProperty().) );
+        personsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            teamsOfSelected.itemsProperty().bind(newValue.getTeams());
+        });
+
         personsListView.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 if (event.getClickCount() == 2) {

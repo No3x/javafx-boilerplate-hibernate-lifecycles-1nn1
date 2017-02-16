@@ -15,7 +15,9 @@ import sample.database.PersonService;
 import sample.database.TeamService;
 import sample.database.dao.IGenericDAO;
 import sample.gui.modeladapter.ListCompare;
-import sample.model.*;
+import sample.model.Person;
+import sample.model.PersonTeam;
+import sample.model.Team;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -63,10 +65,11 @@ public class PersonEditController {
     private void initialize() {
         System.out.println("initialize");
         personSelected = personListController.getPersonSelected();
-        teamCombobox.getItems().addAll(teamService.getAll());
-        teamCombobox.getSelectionModel().selectFirst();
-        teamListview.getItems().addAll(personSelected.getTeams());
         name.setText(personSelected.getName());
+
+        teamCombobox.getItems().setAll(teamService.getAll());
+        teamCombobox.getSelectionModel().selectFirst();
+        teamListview.getItems().setAll(personSelected.getTeams());
     }
 
     /**
