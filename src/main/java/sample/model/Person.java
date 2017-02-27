@@ -124,7 +124,7 @@ public class Person implements GUIRepresentable {
     public void removeTeam(Team team) {
         PersonTeam personTeam = new PersonTeam( this, team );
         team.getPersonTeams().remove( personTeam );
-        personTeams.remove( personTeam );
+        personTeams.removeIf( pt -> pt.getTeam() == team );
         personTeam.setPerson( null );
         personTeam.setTeam( null );
         teams.setAll(personTeams.stream().map(PersonTeam::getTeam).collect(Collectors.toList()));
