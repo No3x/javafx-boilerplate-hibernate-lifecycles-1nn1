@@ -24,7 +24,7 @@ public class Person implements GUIRepresentable, Comparable<Person> {
     private final StringProperty name = new SimpleStringProperty(this, "name");
     private Set<PersonTeam> personTeams = new TreeSet<>();
 
-    private ReadOnlyListProperty<Team> teams = new SimpleListProperty<>(this, "teams", FXCollections.observableArrayList());
+    private ListProperty<Team> teams = new SimpleListProperty<>(this, "teams", FXCollections.observableArrayList());
 
     public Person(String s) {
         this.name.set(s);
