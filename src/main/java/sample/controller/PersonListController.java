@@ -8,7 +8,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import sample.database.PersonService;
 import sample.database.TeamService;
-import sample.database.dao.IGenericDAO;
 import sample.gui.WindowManager;
 import sample.gui.modeladapter.ListViewModelAdapter;
 import sample.model.Person;
@@ -31,13 +30,7 @@ public class PersonListController {
     @FXML
     private ListView<Team> teamsOfSelected;
 
-    private ObservableList<Person> personObservableList;
-
-    @Inject
-    private IGenericDAO<Person, Integer> personDAO;
-
-    @Inject
-    private IGenericDAO<Team, Integer> teamDAO;
+    private ObservableList<Person> personObservableList = FXCollections.observableArrayList();
 
     @Inject
     private PersonService personService;
@@ -56,7 +49,7 @@ public class PersonListController {
     private void initialize() {
         System.out.println("initialize");
         personsListView.setCellFactory((ListView<Person> param) -> new ListViewModelAdapter<>());
-        personObservableList = FXCollections.observableArrayList( Person.extractor() );
+        personObservableList = FXCollections.observableArrayList();
         personObservableList.addAll(personService.getAll());
         personsListView.setItems( personObservableList );
         setupListeners();
@@ -96,7 +89,7 @@ public class PersonListController {
         pt.setCreatedDate(new Date()); //extra column
         pt.setCreatedBy("no3x"); //extra column
         p.getPersonTeams().add(pt);
-        personDAO.saveOrUpdate(p);
+        personService.save(p);
         personObservableList.add(p);
     }
 
