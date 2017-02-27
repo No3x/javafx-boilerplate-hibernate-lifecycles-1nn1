@@ -13,7 +13,7 @@ import java.util.Date;
                 joinColumns = @JoinColumn(name = "PERSON_ID")),
         @AssociationOverride(name = "pk.team",
                 joinColumns = @JoinColumn(name = "TEAM_ID")) })
-public class PersonTeam implements java.io.Serializable, Comparable<PersonTeam> {
+public class PersonTeam implements java.io.Serializable {
 
     private PersonTeamPk pk = new PersonTeamPk();
     private Date createdDate;
@@ -92,8 +92,4 @@ public class PersonTeam implements java.io.Serializable, Comparable<PersonTeam> 
         return (getPk() != null ? getPk().hashCode() : 0);
     }
 
-    @Override
-    public int compareTo(PersonTeam o) {
-        return 0;
-    }
 }

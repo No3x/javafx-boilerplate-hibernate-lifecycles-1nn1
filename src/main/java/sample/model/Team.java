@@ -10,8 +10,8 @@ import sample.gui.GUIRepresentable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by No3x on 03.02.2017.
@@ -20,7 +20,7 @@ import java.util.TreeSet;
 public class Team implements GUIRepresentable, Serializable, Comparable<Team>  {
     private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
     private final StringProperty name = new SimpleStringProperty(this, "name");
-    private Set<PersonTeam> personTeams = new TreeSet<>();
+    private Set<PersonTeam> personTeams = new LinkedHashSet<>();
 
     public Team(String s) {
         this.name.set(s);

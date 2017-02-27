@@ -1,28 +1,26 @@
 package sample.model;
 
-import com.google.common.collect.Sets;
 import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.util.Callback;
-import org.hibernate.collection.internal.PersistentSet;
 import sample.gui.GUIRepresentable;
 
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
  * Created by No3x on 01.02.2017.
  */
 @Entity
-public class Person implements GUIRepresentable, Comparable<Person> {
+public class Person implements GUIRepresentable {
     private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
     private final StringProperty name = new SimpleStringProperty(this, "name");
-    private Set<PersonTeam> personTeams = new TreeSet<>();
+    private Set<PersonTeam> personTeams = new LinkedHashSet<>();
 
     private ListProperty<Team> teams = new SimpleListProperty<>(this, "teams", FXCollections.observableArrayList());
 
@@ -130,9 +128,4 @@ public class Person implements GUIRepresentable, Comparable<Person> {
         return name.getValue();
     }
 
-    @Override
-    public int compareTo(Person o) {
-        //TODO: implement sort
-        return 0;
-    }
 }
