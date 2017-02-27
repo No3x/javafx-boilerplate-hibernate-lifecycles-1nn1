@@ -23,6 +23,7 @@ public class Person implements GUIRepresentable, Comparable<Person> {
     private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
     private final StringProperty name = new SimpleStringProperty(this, "name");
     private Set<PersonTeam> personTeams = new TreeSet<>();
+
     private ReadOnlyListProperty<Team> teams = new SimpleListProperty<>(this, "teams", FXCollections.observableArrayList());
 
     public Person(String s) {
@@ -98,6 +99,11 @@ public class Person implements GUIRepresentable, Comparable<Person> {
 
     @Transient
     public ReadOnlyListProperty<Team> getTeams() {
+        return teams;
+    }
+
+    @Transient
+    public ReadOnlyListProperty<Team> teamsProperty() {
         return teams;
     }
 

@@ -59,8 +59,8 @@ public class PersonListController {
         personObservableList = FXCollections.observableArrayList( Person.extractor() );
         personObservableList.addAll(personService.getAll());
         personsListView.setItems( personObservableList );
-        personsListView.getSelectionModel().selectFirst();
         setupListeners();
+        personsListView.getSelectionModel().selectFirst();
     }
 
     /**
