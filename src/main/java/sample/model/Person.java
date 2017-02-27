@@ -1,13 +1,14 @@
 package sample.model;
 
+import com.github.vbauer.herald.annotation.Log;
 import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.util.Callback;
+import org.slf4j.Logger;
 import sample.gui.GUIRepresentable;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
  */
 @Entity
 public class Person implements GUIRepresentable {
+    @Log
+    static Logger LOG;
     private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
     private final StringProperty name = new SimpleStringProperty(this, "name");
     private Set<PersonTeam> personTeams = new LinkedHashSet<>();
@@ -109,8 +112,12 @@ public class Person implements GUIRepresentable {
         final PersonTeam personTeam = new PersonTeam(this, team);
         personTeam.setCreatedBy(createdBy);
         personTeam.setCreatedDate(createdDate);
-        personTeams.add(personTeam);
-        team.getPersonTeams().add( personTeam );
+        if( !personTeams.add(personTeam) ) {
+            LOG.error("Failed to add personTeam " + personTeam + " to collection personTeams " + personTeams);
+        }
+        if( !team.getPersonTeams().add( personTeam ) ) {
+            LOG.error("Failed to add personTeam " + personTeam + " to collection team.getPersonTeams " + team.getPersonTeams());
+        }
         teams.setAll(personTeams.stream().map(PersonTeam::getTeam).collect(Collectors.toList()));
     }
 
@@ -123,6 +130,10 @@ public class Person implements GUIRepresentable {
         teams.setAll(personTeams.stream().map(PersonTeam::getTeam).collect(Collectors.toList()));
     }
 
+    /*
+      The method is not intended to be used in the GUI.
+      Use the {@link GUIRepresentable} interface instead.
+     */
     @Override
     public String toString() {
         return name.getValue();
