@@ -23,7 +23,7 @@ public class Person implements GUIRepresentable, Comparable<Person> {
     private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
     private final StringProperty name = new SimpleStringProperty(this, "name");
     private Set<PersonTeam> personTeams = new TreeSet<>();
-    private ListProperty<Team> teams = new SimpleListProperty<>( this, "teams", FXCollections.observableArrayList());
+    private ReadOnlyListProperty<Team> teams = new SimpleListProperty<>(this, "teams", FXCollections.observableArrayList());
 
     public Person(String s) {
         this.name.set(s);
@@ -64,7 +64,6 @@ public class Person implements GUIRepresentable, Comparable<Person> {
     public void setPersonTeams(Set<PersonTeam> personTeams) {
         this.personTeams = personTeams;
         teams.setAll(personTeams.stream().map(PersonTeam::getTeam).collect(Collectors.toList()));
-        // personTeams.stream().map(PersonTeam::getTeam).forEach( team -> teams.add(team));
     }
 
     @Override
