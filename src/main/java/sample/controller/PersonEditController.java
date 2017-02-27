@@ -101,7 +101,7 @@ public class PersonEditController {
      * @param event
      */
     public void removeTeamAction(ActionEvent event) {
-        final Team selectedItem = teamCombobox.getSelectionModel().getSelectedItem();
+        final Team selectedItem = teamListview.getSelectionModel().getSelectedItem();
         personSelected.removeTeam( selectedItem );
     }
 
