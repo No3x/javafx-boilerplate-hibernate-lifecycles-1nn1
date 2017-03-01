@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import sample.database.PersonService;
 import sample.database.TeamService;
 import sample.database.dao.IGenericDAO;
+import sample.gui.modeladapter.ListCompare;
 import sample.model.Person;
 import sample.model.PersonTeam;
 import sample.model.Team;
@@ -69,7 +70,6 @@ public class PersonEditController {
         teamCombobox.getItems().setAll(teamService.getAll());
         teamCombobox.getSelectionModel().selectFirst();
         teamListview.getItems().setAll(personSelected.getTeams());
-        teamListview.itemsProperty().bind( personSelected.teamsProperty() );
     }
 
     /**
@@ -77,6 +77,16 @@ public class PersonEditController {
      * @param event
      */
     public void saveAction(ActionEvent event) {
+        new ListCompare<>(personSelected.getTeams(), teamListview.getItems(), new ListCompare.IChangeAction<Team>() {
+            @Override
+            public void added(Iterable<? extends Team> added) {
+                added.forEach( team -> personSelected.addTeam(team, "GUI", new Date()));
+            }
+            @Override
+            public void removed(Iterable<? extends Team> removed) {
+                removed.forEach(team -> personSelected.removeTeam(team));
+            }
+        }).manageChanges();
         personService.save(personSelected);
         closeWindow(event);
     }
@@ -90,8 +100,8 @@ public class PersonEditController {
     public void addTeamAction(ActionEvent event) {
         final Team selectedItem = teamCombobox.getSelectionModel().getSelectedItem();
         // Do not add them more than once to the ListView
-        if(!personSelected.getTeams().contains(selectedItem)) {
-            personSelected.addTeam( selectedItem, "GUI", new Date() );
+        if(!teamListview.getItems().contains(selectedItem)) {
+            teamListview.getItems().add( selectedItem );
         }
     }
 
@@ -102,7 +112,7 @@ public class PersonEditController {
      */
     public void removeTeamAction(ActionEvent event) {
         final Team selectedItem = teamListview.getSelectionModel().getSelectedItem();
-        personSelected.removeTeam( selectedItem );
+        teamListview.getItems().remove( selectedItem );
     }
 
     private void closeWindow(ActionEvent event) {
