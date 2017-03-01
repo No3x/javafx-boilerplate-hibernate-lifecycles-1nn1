@@ -77,6 +77,7 @@ public class PersonEditController {
      * @param event
      */
     public void saveAction(ActionEvent event) {
+        personSelected.setName(name.getText());
         new ListCompare<>(personSelected.getTeams(), teamListview.getItems(), new ListCompare.IChangeAction<Team>() {
             @Override
             public void added(Iterable<? extends Team> added) {
