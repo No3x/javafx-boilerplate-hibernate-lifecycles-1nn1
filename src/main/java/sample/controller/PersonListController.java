@@ -60,9 +60,9 @@ public class PersonListController {
      */
     private void setupListeners() {
         System.out.println("setupListeners");
-        //Bindings.when(teamsOfSelected.itemsProperty().isNotNull()).then( Bindings.bindBidirectional(teamsOfSelected.itemsProperty().) );
+
         personsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            teamsOfSelected.itemsProperty().bind(newValue.getTeams());
+            teamsOfSelected.itemsProperty().bind(newValue.teamsProperty());
         });
 
         personsListView.setOnMouseClicked(event -> {

@@ -1,12 +1,15 @@
 package sample.model;
 
 import com.github.vbauer.herald.annotation.Log;
+import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.util.Callback;
 import org.slf4j.Logger;
 import sample.gui.GUIRepresentable;
+import sample.gui.modeladapter.UnmodifiableObservableList;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -98,9 +101,13 @@ public class Person implements GUIRepresentable {
         return result;
     }
 
+    /**
+     * Returns an unmodifiable Observable List
+     * @return d {@link UnmodifiableObservableList}
+     */
     @Transient
-    public ReadOnlyListProperty<Team> getTeams() {
-        return teams;
+    public ObservableList<Team> getTeams() {
+        return teams.get();
     }
 
     @Transient
