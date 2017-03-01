@@ -86,7 +86,7 @@ public class PersonListController {
         pt.setPerson(p);
         pt.setTeam(t);
         pt.setCreatedDate(new Date()); //extra column
-        pt.setCreatedBy("no3x"); //extra column
+        pt.setCreatedBy("random"); //extra column
         p.getPersonTeams().add(pt);
         personService.save(p);
         personObservableList.add(p);
