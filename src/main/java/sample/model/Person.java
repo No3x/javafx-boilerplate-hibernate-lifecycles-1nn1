@@ -1,7 +1,6 @@
 package sample.model;
 
 import com.github.vbauer.herald.annotation.Log;
-import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -9,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.util.Callback;
 import org.slf4j.Logger;
 import sample.gui.GUIRepresentable;
-import sample.gui.modeladapter.UnmodifiableObservableList;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -102,8 +100,8 @@ public class Person implements GUIRepresentable {
     }
 
     /**
-     * Returns an unmodifiable Observable List
-     * @return d {@link UnmodifiableObservableList}
+     * Returns an Observable List that must remain unchanged.
+     * Unfortunately there is no RO Observable List Interface to refer to.
      */
     @Transient
     public ObservableList<Team> getTeams() {
