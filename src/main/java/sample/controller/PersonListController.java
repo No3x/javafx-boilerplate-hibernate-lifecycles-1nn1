@@ -49,8 +49,7 @@ public class PersonListController {
     private void initialize() {
         System.out.println("initialize");
         personsListView.setCellFactory((ListView<Person> param) -> new ListViewModelAdapter<>());
-        personObservableList = FXCollections.observableArrayList();
-        personObservableList.addAll(personService.getAll());
+        personObservableList = FXCollections.observableArrayList( personService.getAll() );
         personsListView.setItems( personObservableList );
         setupListeners();
         personsListView.getSelectionModel().selectFirst();
